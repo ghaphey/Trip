@@ -1,9 +1,9 @@
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-Assets/AssetStoreTools*
+RoadWarrior/[Ll]ibrary/
+RoadWarrior/[[Tt]emp/
+RoadWarrior/[[Oo]bj/
+RoadWarrior/[[Bb]uild/
+RoadWarrior/[[Bb]uilds/
+RoadWarrior/[Assets/AssetStoreTools*
 
 # Visual Studio cache directory
 .vs/
