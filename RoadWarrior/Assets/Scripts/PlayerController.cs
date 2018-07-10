@@ -1,62 +1,81 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
-    public List<AxleInfo> axleInfos;
-    public float maxMotorTorque;
-    public float maxSteeringAngle;
-
-    // finds the corresponding visual wheel
-    // correctly applies the transform
-    public void ApplyLocalPositionToVisuals(WheelCollider collider)
-    {
-        if (collider.transform.childCount == 0)
-        {
-            print("no child");
-
-            return;
-        }
-
-        Transform visualWheel = collider.transform.GetChild(0);
-
-        Vector3 position;
-        Quaternion rotation;
-        collider.GetWorldPose(out position, out rotation);
-
-        visualWheel.transform.position = position;
-        visualWheel.transform.rotation = rotation;
-    }
-
-    public void FixedUpdate()
-    {
-        float motor = maxMotorTorque * Input.GetAxis("Vertical");
-        float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
-
-        foreach (AxleInfo axleInfo in axleInfos)
-        {
-            if (axleInfo.steering)
-            {
-                axleInfo.leftWheel.steerAngle = steering;
-                axleInfo.rightWheel.steerAngle = steering;
-            }
-            if (axleInfo.motor)
-            {
-                axleInfo.leftWheel.motorTorque = motor;
-                axleInfo.rightWheel.motorTorque = motor;
-            }
-            ApplyLocalPositionToVisuals(axleInfo.leftWheel);
-            ApplyLocalPositionToVisuals(axleInfo.rightWheel);
-        }
-    }
-}
-
-
-[System.Serializable]
-public class AxleInfo
+public class PlayerController : MonoBehaviour
 {
-    public WheelCollider leftWheel;
-    public WheelCollider rightWheel;
-    public bool motor; // is this wheel attached to motor?
-    public bool steering; // does this wheel apply steer angle?
+    [SerializeField] private int health = 100;
+    [SerializeField] private float maxSpeed = 10;
+    [SerializeField] private float minSpeed = 5;
+    [SerializeField] private float laneWidth = 2.0f;
+    [SerializeField] private float carWidth = 1.0f;
+    [SerializeField] private int numLanes = 3;
+    [SerializeField] private Transform cameraPivot;
+    [SerializeField] private Transform turretBase;
+
+    private float currSpeed = 0.0f;
+    private int currLane = 0;
+
+    private void Start()
+    {
+        currSpeed = minSpeed;
+    }
+
+    private void Update()
+    {
+        transform.position += Vector3.forward * currSpeed * Time.deltaTime;
+        ChangeLane();
+        MoveCamera();
+        turretTrackMouse();
+    }
+
+    private void ChangeLane()
+    {
+        if (Input.GetKeyDown("a"))
+        {
+            if (currLane > 0)
+            {
+                currLane--;
+            }
+        }
+        else if (Input.GetKeyDown("d"))
+        {
+            if (currLane < numLanes - 1)
+            {
+                currLane++;
+            }
+        }
+        transform.position = new Vector3((currLane * laneWidth) + carWidth / 2, transform.position.y, transform.position.z);
+    }
+
+    private void MoveCamera()
+    {
+        if(Input.GetKeyDown("e"))
+        {
+            cameraPivot.Rotate(0.0f, 90.0f, 0.0f);
+            turretBase.Rotate(0.0f, 90.0f, 0.0f);
+        }
+        else if (Input.GetKeyDown("q"))
+        {
+            cameraPivot.Rotate(0.0f, -90.0f, 0.0f);
+            turretBase.Rotate(0.0f, -90.0f, 0.0f);
+        }
+    }
+
+
+
+    private void turretTrackMouse()
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
+        {
+            turretBase.GetChild(0).LookAt(hit.point);
+        }
+    }
+
+
+
+
 }
