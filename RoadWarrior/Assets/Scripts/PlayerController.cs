@@ -6,13 +6,20 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private int health = 100;
-    [SerializeField] private float maxSpeed = 10;
+    //[SerializeField] private float maxSpeed = 10;
     [SerializeField] private float minSpeed = 5;
     [SerializeField] private float laneWidth = 2.0f;
     [SerializeField] private float carWidth = 1.0f;
+    //[SerializeField] private float turretPitchMax = 45.0f;
+    //[SerializeField] private float turretYawMax = 45.0f;
+    //[SerializeField] private float maxRange = 20.0f;
     [SerializeField] private int numLanes = 3;
+    [SerializeField] private int cannonDamage = 10;
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private Transform turretBase;
+    [SerializeField] private Transform barrel;
+    [SerializeField] private GameObject hitFX;
+    [SerializeField] private ParticleSystem fireFX;
 
     private float currSpeed = 0.0f;
     private int currLane = 0;
@@ -24,10 +31,17 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (health <= 0)
+            print("GameOver");
         transform.position += Vector3.forward * currSpeed * Time.deltaTime;
         ChangeLane();
         MoveCamera();
         turretTrackMouse();
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            FireCannon();
+        }
     }
 
     private void ChangeLane()
@@ -76,6 +90,21 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    private void FireCannon()
+    {
+        fireFX.Play();
+        RaycastHit hit;
+        if(Physics.Raycast(barrel.position, barrel.TransformDirection(Vector3.up), out hit ))
+        {
+            Instantiate(hitFX, hit.point, Quaternion.identity);
+            if (hit.transform.GetComponent<EnemyHealth>())
+                hit.transform.GetComponent<EnemyHealth>().ApplyDamage(cannonDamage);
+        }
+    }
 
-
+    public void ApplyDamage (int damage)
+    {
+        health -= damage;
+        print(damage + " damage taken");
+    }
 }
