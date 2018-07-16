@@ -41,7 +41,6 @@ GameObject:
   - component: {fileID: 23031087665069828}
   - component: {fileID: 33260022153029376}
   - component: {fileID: 114427593761941094}
-  - component: {fileID: 64734190899582640}
   m_Layer: 0
   m_Name: WheelLR
   m_TagString: Untagged
@@ -59,6 +58,7 @@ GameObject:
   - component: {fileID: 4950938407330360}
   - component: {fileID: 54422498898874480}
   - component: {fileID: 114630783164045800}
+  - component: {fileID: 114221823472788422}
   m_Layer: 0
   m_Name: Bomber
   m_TagString: Enemy
@@ -92,7 +92,6 @@ GameObject:
   - component: {fileID: 23684120398325184}
   - component: {fileID: 33788876478946978}
   - component: {fileID: 114250132301900108}
-  - component: {fileID: 64911098882112146}
   m_Layer: 0
   m_Name: WheelLF
   m_TagString: Untagged
@@ -111,7 +110,6 @@ GameObject:
   - component: {fileID: 23144419234368946}
   - component: {fileID: 33844458047296036}
   - component: {fileID: 114340667251420210}
-  - component: {fileID: 64548984230674892}
   m_Layer: 0
   m_Name: WheelRF
   m_TagString: Untagged
@@ -130,7 +128,6 @@ GameObject:
   - component: {fileID: 23691470179607340}
   - component: {fileID: 33070825194282416}
   - component: {fileID: 114906675690433888}
-  - component: {fileID: 64995306208922660}
   m_Layer: 0
   m_Name: WheelRR
   m_TagString: Untagged
@@ -145,7 +142,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1732475125992956}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0.025000095, y: 0.049999952, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4593846075409936}
@@ -175,7 +172,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1265560463031740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.65000004, z: 0}
+  m_LocalPosition: {x: 0.5250001, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4950938407330360}
@@ -201,7 +198,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1547813748638362}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5, y: 0, z: 1.625}
+  m_LocalPosition: {x: 4.5, y: 0.125, z: 1.275}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4628454246664996}
@@ -460,62 +457,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &64548984230674892
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1759882901752908}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 0}
---- !u!64 &64734190899582640
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1412652038868118}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 0}
---- !u!64 &64911098882112146
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1735572341168076}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 0}
---- !u!64 &64995306208922660
-MeshCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1813303735262586}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
-  m_SkinWidth: 0.01
-  m_Mesh: {fileID: 0}
 --- !u!65 &65475361334210338
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -4561,6 +4502,23 @@ MonoBehaviour:
   m_selectedFaces: 
   m_SelectedEdges: []
   m_selectedTriangles: 
+--- !u!114 &114221823472788422
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1547813748638362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fc51ee12ec4fad4fb28c00179971461, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 6
+  accelerate: 0.001
+  numLanes: 3
+  manueverDistance: 7
+  bomberWidth: 1
+  laneWidth: 2
 --- !u!114 &114250132301900108
 MonoBehaviour:
   m_ObjectHideFlags: 1
