@@ -24,17 +24,22 @@ public class PlayerController : MonoBehaviour
     private float currSpeed = 0.0f;
     private int currLane = 0;
 
+    private Rigidbody rb;
+    public Vector3 COM;
+
     private void Start()
     {
         currSpeed = minSpeed;
+        rb = GetComponent<Rigidbody>();
+        rb.centerOfMass = COM;
     }
 
     private void Update()
     {
         if (health <= 0)
             print("GameOver");
-        transform.position += Vector3.forward * currSpeed * Time.deltaTime;
-        ChangeLane();
+        //transform.position += Vector3.forward * currSpeed * Time.deltaTime;
+       //ChangeLane();
         MoveCamera();
         turretTrackMouse();
 
@@ -42,6 +47,8 @@ public class PlayerController : MonoBehaviour
         {
             FireCannon();
         }
+
+
     }
 
     private void ChangeLane()

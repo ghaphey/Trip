@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyPathfind : MonoBehaviour {
+public class BomberPathfind : MonoBehaviour {
 
     [SerializeField] private float speed = 10;
     [SerializeField] private float accelerate = 0.001f;
@@ -13,6 +13,7 @@ public class EnemyPathfind : MonoBehaviour {
     [SerializeField] private float laneWidth;
 
     private Transform playerTransform;
+    private Rigidbody rb;
 
     private int currLane = 2;
     private int[] coinFlip = new int[] { 1, -1 };
@@ -21,6 +22,7 @@ public class EnemyPathfind : MonoBehaviour {
 	void Start ()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        rb = GetComponent<Rigidbody>();
 	}
 
     // Update is called once per frame
@@ -35,7 +37,7 @@ public class EnemyPathfind : MonoBehaviour {
                 MoveToPlayerLane();
             }
         }
-        transform.position += Vector3.forward * speed * Time.deltaTime;
+        rb.MovePosition(rb.position + Vector3.forward * speed * Time.deltaTime);
 
     }
 
@@ -76,17 +78,21 @@ public class EnemyPathfind : MonoBehaviour {
         {
             currLane += coinFlip[UnityEngine.Random.Range(0, 1)];
         }
-        print(currLane);
-        transform.position = new Vector3((currLane * laneWidth) + bomberWidth / 2, transform.position.y, transform.position.z);
+        rb.MovePosition(new Vector3((currLane * laneWidth) + bomberWidth / 2, transform.position.y, transform.position.z));
     }
 
 
     private void MoveToPlayerLane()
     {
         if (playerTransform.position.x > transform.position.x)
-            transform.Translate(laneWidth, 0f, 0f);
+            rb.MovePosition(rb.position + new Vector3(laneWidth, 0f, 0f));
         else
-            transform.Translate(-laneWidth, 0f, 0f);
+            rb.MovePosition(rb.position - new Vector3(laneWidth, 0f, 0f));
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        print("Collided: " + collision.collider.tag);
     }
 }
