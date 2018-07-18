@@ -5,15 +5,26 @@ using UnityEngine;
 
 public class BomberPathfind : MonoBehaviour {
 
-    [SerializeField] private float speed = 10;
-    [SerializeField] private float accelerate = 0.001f;
+    //[SerializeField] private float speed = 10;
+    //[SerializeField] private float accelerate = 0.001f;
+    [Header("Distances")]
     [SerializeField] private int numLanes = 3;
     [SerializeField] private float manueverDistance = 10;
     [SerializeField] private float bomberWidth;
     [SerializeField] private float laneWidth;
+    [Header("Wheel Information")]
+    [SerializeField] private List<AxleInfo> axleInfos;
+    [SerializeField] private float maxMotorTorque;
+    [SerializeField] private float maxSteeringAngle;
+    [SerializeField] private float turnRate = 0.25f;
+    [SerializeField] private float lineFollowDeviation = 0.5f;
+    [SerializeField] private List<Transform> wheelModels;
 
     private Transform playerTransform;
-    private Rigidbody rb;
+    //private Rigidbody rb;
+    private Vector3 targetLine;
+    private float currSteerAngle = 0.0f;
+    private int timeTurning;
 
     private int currLane = 2;
     private int[] coinFlip = new int[] { 1, -1 };
@@ -21,8 +32,10 @@ public class BomberPathfind : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
+        targetLine = transform.position;
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
+        SetMotorTorque(maxMotorTorque);
 	}
 
     // Update is called once per frame
@@ -31,15 +44,62 @@ public class BomberPathfind : MonoBehaviour {
         AvoidBarriers();
         if (CheckPlayerDistance())
         {
-            speed += accelerate;
             if (playerTransform.position.x != transform.position.x)
             {
-                MoveToPlayerLane();
+                DriveAtPlayer();
             }
         }
-        rb.MovePosition(rb.position + Vector3.forward * speed * Time.deltaTime);
+        //rb.MovePosition(rb.position + Vector3.forward * speed * Time.deltaTime);
 
+        if (transform.position.x - lineFollowDeviation > targetLine.x || timeTurning > 0)
+        {
+            SetSteeringAngle(-turnRate);
+            print("turningleft");
+            timeTurning--;
+        }
+        else if (transform.position.x + lineFollowDeviation < targetLine.x || timeTurning < 0)
+        {
+            SetSteeringAngle(turnRate);
+            print("turningright");
+            timeTurning++;
+        }
+        else
+        {
+            SetSteeringAngle(0.0f);
+        }
     }
+
+    private void SetSteeringAngle(float angle)
+    {
+        if (angle != 0f)
+            currSteerAngle = Mathf.Clamp(currSteerAngle + angle * Time.deltaTime, -maxSteeringAngle, maxSteeringAngle);
+        else
+            currSteerAngle = 0.0f;
+        int i = 0;
+        foreach (AxleInfo axleInfo in axleInfos)
+        {
+            if (axleInfo.steering)
+            {
+                axleInfo.leftWheel.steerAngle = currSteerAngle;
+                axleInfo.rightWheel.steerAngle = currSteerAngle;
+            }
+            ApplyLocalPositionToVisuals(axleInfo.leftWheel, i++);
+            ApplyLocalPositionToVisuals(axleInfo.rightWheel, i++);
+        }
+    }
+
+    private void SetMotorTorque(float motorTorque)
+    {
+        foreach (AxleInfo axleInfo in axleInfos)
+        {
+            if (axleInfo.motor)
+            {
+                axleInfo.leftWheel.motorTorque = motorTorque;
+                axleInfo.rightWheel.motorTorque = motorTorque;
+            }
+        }
+    }
+
 
 
     private bool CheckPlayerDistance()
@@ -59,6 +119,7 @@ public class BomberPathfind : MonoBehaviour {
         {
             if (hit.collider.tag == "Obstacle")
             {
+                print("Trying to change lane");
                 ChangeLane();
             }
         }
@@ -78,21 +139,33 @@ public class BomberPathfind : MonoBehaviour {
         {
             currLane += coinFlip[UnityEngine.Random.Range(0, 1)];
         }
-        rb.MovePosition(new Vector3((currLane * laneWidth) + bomberWidth / 2, transform.position.y, transform.position.z));
+        targetLine = new Vector3((currLane * laneWidth) + bomberWidth / 2, 
+                                 transform.position.y, 
+                                 transform.position.z);
     }
 
 
-    private void MoveToPlayerLane()
+    private void DriveAtPlayer()
     {
-        if (playerTransform.position.x > transform.position.x)
-            rb.MovePosition(rb.position + new Vector3(laneWidth, 0f, 0f));
-        else
-            rb.MovePosition(rb.position - new Vector3(laneWidth, 0f, 0f));
+        targetLine = playerTransform.position;
 
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        print("Collided: " + collision.collider.tag);
+        //print("Collided: " + collision.collider.tag);
+    }
+
+    private void ApplyLocalPositionToVisuals(WheelCollider collider, int wheelIndex)
+    {
+
+        Transform visualWheel = wheelModels[wheelIndex];
+
+        Vector3 position;
+        Quaternion rotation;
+        collider.GetWorldPose(out position, out rotation);
+
+        visualWheel.transform.position = position;
+        visualWheel.transform.rotation = rotation;
     }
 }

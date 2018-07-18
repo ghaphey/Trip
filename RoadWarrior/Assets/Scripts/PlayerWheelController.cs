@@ -4,20 +4,17 @@ using UnityEngine;
 
 public class PlayerWheelController : MonoBehaviour {
 
-    public List<AxleInfo> axleInfos;
-    public float maxMotorTorque;
-    public float maxSteeringAngle;
+    [SerializeField] private List<AxleInfo> axleInfos;
+    [SerializeField] private float maxMotorTorque;
+    [SerializeField] private float maxSteeringAngle;
+    [SerializeField] private List<Transform> wheelModels;
 
     // finds the corresponding visual wheel
     // correctly applies the transform
-    public void ApplyLocalPositionToVisuals(WheelCollider collider)
+    private void ApplyLocalPositionToVisuals(WheelCollider collider, int wheelIndex)
     {
-        if (collider.transform.childCount == 0)
-        {
-            return;
-        }
 
-        Transform visualWheel = collider.transform.GetChild(0);
+        Transform visualWheel = wheelModels[wheelIndex];
 
         Vector3 position;
         Quaternion rotation;
@@ -27,11 +24,11 @@ public class PlayerWheelController : MonoBehaviour {
         visualWheel.transform.rotation = rotation;
     }
 
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
         float motor = maxMotorTorque * Input.GetAxis("Vertical");
         float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
-
+        int i = 0;
         foreach (AxleInfo axleInfo in axleInfos)
         {
             if (axleInfo.steering)
@@ -44,8 +41,8 @@ public class PlayerWheelController : MonoBehaviour {
                 axleInfo.leftWheel.motorTorque = motor;
                 axleInfo.rightWheel.motorTorque = motor;
             }
-            //ApplyLocalPositionToVisuals(axleInfo.leftWheel);
-            //ApplyLocalPositionToVisuals(axleInfo.rightWheel);
+            ApplyLocalPositionToVisuals(axleInfo.leftWheel, i++);
+            ApplyLocalPositionToVisuals(axleInfo.rightWheel, i++);
         }
     }
 

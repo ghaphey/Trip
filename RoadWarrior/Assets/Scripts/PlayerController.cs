@@ -7,13 +7,13 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private int health = 100;
     //[SerializeField] private float maxSpeed = 10;
-    [SerializeField] private float minSpeed = 5;
-    [SerializeField] private float laneWidth = 2.0f;
-    [SerializeField] private float carWidth = 1.0f;
+    //[SerializeField] private float minSpeed = 5;
+    //[SerializeField] private float laneWidth = 2.0f;
+    //[SerializeField] private float carWidth = 1.0f;
     //[SerializeField] private float turretPitchMax = 45.0f;
     //[SerializeField] private float turretYawMax = 45.0f;
     //[SerializeField] private float maxRange = 20.0f;
-    [SerializeField] private int numLanes = 3;
+    //[SerializeField] private int numLanes = 3;
     [SerializeField] private int cannonDamage = 10;
     [SerializeField] private Transform cameraPivot;
     [SerializeField] private Transform turretBase;
@@ -21,15 +21,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject hitFX;
     [SerializeField] private ParticleSystem fireFX;
 
-    private float currSpeed = 0.0f;
-    private int currLane = 0;
+   // private float currSpeed = 0.0f;
+    //private int currLane = 0;
 
     private Rigidbody rb;
     public Vector3 COM;
 
     private void Start()
     {
-        currSpeed = minSpeed;
+        //currSpeed = minSpeed;
         rb = GetComponent<Rigidbody>();
         rb.centerOfMass = COM;
     }
@@ -51,24 +51,24 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void ChangeLane()
-    {
-        if (Input.GetKeyDown("a"))
-        {
-            if (currLane > 0)
-            {
-                currLane--;
-            }
-        }
-        else if (Input.GetKeyDown("d"))
-        {
-            if (currLane < numLanes - 1)
-            {
-                currLane++;
-            }
-        }
-        transform.position = new Vector3((currLane * laneWidth) + carWidth / 2, transform.position.y, transform.position.z);
-    }
+    //private void ChangeLane()
+    //{
+    //    if (Input.GetKeyDown("a"))
+    //    {
+    //        if (currLane > 0)
+    //        {
+    //            currLane--;d
+    //        }
+    //    }
+    //    else if (Input.GetKeyDown("d"))
+    //    {
+    //        if (currLane < numLanes - 1)
+    //        {
+    //            currLane++;
+    //        }
+    //    }
+    //    transform.position = new Vector3((currLane * laneWidth) + carWidth / 2, transform.position.y, transform.position.z);
+    //}
 
     private void MoveCamera()
     {

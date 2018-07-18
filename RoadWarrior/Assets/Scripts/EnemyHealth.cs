@@ -19,7 +19,7 @@ public class EnemyHealth : MonoBehaviour {
     public void ApplyDamage(int damage)
     {
         health -= damage;
-        print(gameObject.name + " took damage: " + damage);
+        //print(gameObject.name + " took damage: " + damage);
     }
 
     private void OnCollisionEnter(Collision collision)
