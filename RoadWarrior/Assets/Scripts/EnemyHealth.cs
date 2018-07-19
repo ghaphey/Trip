@@ -29,7 +29,12 @@ public class EnemyHealth : MonoBehaviour {
             collision.gameObject.GetComponent<PlayerController>().ApplyDamage(impactDamageDealt);
             health = 0;
         }
-        else if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Obstacle")
+        else if (collision.gameObject.tag == "Enemy")
+        {
+            if (gameObject.tag != "Enemy")
+                collision.gameObject.GetComponent<EnemyHealth>().ApplyDamage(impactDamageDealt);
+        }
+        else if (collision.gameObject.tag == "Obstacle")
         {
             collision.gameObject.GetComponent<EnemyHealth>().ApplyDamage(impactDamageDealt);
         }

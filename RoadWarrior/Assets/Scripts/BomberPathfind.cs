@@ -12,6 +12,7 @@ public class BomberPathfind : MonoBehaviour {
     [SerializeField] private float manueverDistance = 10;
     [SerializeField] private float bomberWidth;
     [SerializeField] private float laneWidth;
+    [SerializeField] private int currLane = 2;
     [Header("Wheel Information")]
     [SerializeField] private List<AxleInfo> axleInfos;
     [SerializeField] private float maxMotorTorque;
@@ -22,11 +23,11 @@ public class BomberPathfind : MonoBehaviour {
 
     private Transform playerTransform;
     //private Rigidbody rb;
-    private Vector3 targetLine;
+    public Vector3 targetLine;
     private float currSteerAngle = 0.0f;
     private int timeTurning;
+    private string avoidingName;
 
-    private int currLane = 2;
     private int[] coinFlip = new int[] { 1, -1 };
 
 	// Use this for initialization
@@ -51,21 +52,31 @@ public class BomberPathfind : MonoBehaviour {
         }
         //rb.MovePosition(rb.position + Vector3.forward * speed * Time.deltaTime);
 
-        if (transform.position.x - lineFollowDeviation > targetLine.x || timeTurning > 0)
+        if (transform.position.x - lineFollowDeviation > targetLine.x )
         {
             SetSteeringAngle(-turnRate);
             print("turningleft");
-            timeTurning--;
+            //timeTurning--;
         }
-        else if (transform.position.x + lineFollowDeviation < targetLine.x || timeTurning < 0)
+        else if (transform.position.x + lineFollowDeviation < targetLine.x )
         {
             SetSteeringAngle(turnRate);
             print("turningright");
-            timeTurning++;
+            //timeTurning++;
         }
         else
         {
             SetSteeringAngle(0.0f);
+            //if (timeTurning > 0)
+            //{
+            //    SetSteeringAngle(-turnRate);
+            //}
+            //else if (timeTurning < 0)
+            //{
+            //    SetSteeringAngle(turnRate);
+            //}
+            //else
+            //    SetSteeringAngle(0.0f);
         }
     }
 
@@ -117,10 +128,11 @@ public class BomberPathfind : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, manueverDistance))
         {
-            if (hit.collider.tag == "Obstacle")
+            if (hit.collider.tag == "Obstacle" && avoidingName != hit.collider.name)
             {
-                print("Trying to change lane");
                 ChangeLane();
+                avoidingName = hit.collider.name;
+                print("Trying to avoid: " + avoidingName);
             }
         }
     }
@@ -139,7 +151,7 @@ public class BomberPathfind : MonoBehaviour {
         {
             currLane += coinFlip[UnityEngine.Random.Range(0, 1)];
         }
-        targetLine = new Vector3((currLane * laneWidth) + bomberWidth / 2, 
+        targetLine = new Vector3((currLane * laneWidth) + bomberWidth, 
                                  transform.position.y, 
                                  transform.position.z);
     }
