@@ -10,7 +10,7 @@ public class EnemyHealth : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
     {
-		if (health <= 0)
+		if (health <= 0 || Vector3.Dot(transform.up, Vector3.down ) > 0)
         {
             Destroy(gameObject);
         }
@@ -39,4 +39,5 @@ public class EnemyHealth : MonoBehaviour {
             collision.gameObject.GetComponent<EnemyHealth>().ApplyDamage(impactDamageDealt);
         }
     }
+
 }

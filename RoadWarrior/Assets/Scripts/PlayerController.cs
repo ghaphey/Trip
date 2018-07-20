@@ -20,12 +20,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform barrel;
     [SerializeField] private GameObject hitFX;
     [SerializeField] private ParticleSystem fireFX;
+    [SerializeField] private Vector3 COM;
 
-   // private float currSpeed = 0.0f;
+    // private float currSpeed = 0.0f;
     //private int currLane = 0;
 
     private Rigidbody rb;
-    public Vector3 COM;
 
     private void Start()
     {

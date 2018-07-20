@@ -7,28 +7,18 @@ public class BomberPathfind : MonoBehaviour {
 
     //[SerializeField] private float speed = 10;
     //[SerializeField] private float accelerate = 0.001f;
-    [Header("Distances")]
     [SerializeField] private int numLanes = 3;
     [SerializeField] private float manueverDistance = 10;
     [SerializeField] private float bomberWidth;
     [SerializeField] private float laneWidth;
     [SerializeField] private int currLane = 2;
-    [Header("Wheel Information")]
-    [SerializeField] private List<AxleInfo> axleInfos;
-    [SerializeField] private float maxMotorTorque;
-    [SerializeField] private float maxSteeringAngle;
-    [SerializeField] private float turnRate = 0.25f;
-    [SerializeField] private float lineFollowDeviation = 0.5f;
-    [SerializeField] private List<Transform> wheelModels;
+    [SerializeField] private EnemyWheelController wheelController;
 
     private Transform playerTransform;
     //private Rigidbody rb;
     public Vector3 targetLine;
-    private float currSteerAngle = 0.0f;
     private int timeTurning;
     private string avoidingName;
-
-    private int[] coinFlip = new int[] { 1, -1 };
 
 	// Use this for initialization
 	void Start ()
@@ -36,7 +26,7 @@ public class BomberPathfind : MonoBehaviour {
         targetLine = transform.position;
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         //rb = GetComponent<Rigidbody>();
-        SetMotorTorque(maxMotorTorque);
+        wheelController.SetMotorTorque(wheelController.maxMotorTorque);
 	}
 
     // Update is called once per frame
@@ -52,21 +42,21 @@ public class BomberPathfind : MonoBehaviour {
         }
         //rb.MovePosition(rb.position + Vector3.forward * speed * Time.deltaTime);
 
-        if (transform.position.x - lineFollowDeviation > targetLine.x )
+        if (transform.position.x - wheelController.lineFollowDeviation > targetLine.x )
         {
-            SetSteeringAngle(-turnRate);
-            print("turningleft");
+            wheelController.SetSteeringAngle(-wheelController.turnRate);
+            //print("turningleft");
             //timeTurning--;
         }
-        else if (transform.position.x + lineFollowDeviation < targetLine.x )
+        else if (transform.position.x + wheelController.lineFollowDeviation < targetLine.x )
         {
-            SetSteeringAngle(turnRate);
-            print("turningright");
+            wheelController.SetSteeringAngle(wheelController.turnRate);
+            //print("turningright");
             //timeTurning++;
         }
         else
         {
-            SetSteeringAngle(0.0f);
+            wheelController.SetSteeringAngle(0.0f);
             //if (timeTurning > 0)
             //{
             //    SetSteeringAngle(-turnRate);
@@ -80,36 +70,7 @@ public class BomberPathfind : MonoBehaviour {
         }
     }
 
-    private void SetSteeringAngle(float angle)
-    {
-        if (angle != 0f)
-            currSteerAngle = Mathf.Clamp(currSteerAngle + angle * Time.deltaTime, -maxSteeringAngle, maxSteeringAngle);
-        else
-            currSteerAngle = 0.0f;
-        int i = 0;
-        foreach (AxleInfo axleInfo in axleInfos)
-        {
-            if (axleInfo.steering)
-            {
-                axleInfo.leftWheel.steerAngle = currSteerAngle;
-                axleInfo.rightWheel.steerAngle = currSteerAngle;
-            }
-            ApplyLocalPositionToVisuals(axleInfo.leftWheel, i++);
-            ApplyLocalPositionToVisuals(axleInfo.rightWheel, i++);
-        }
-    }
-
-    private void SetMotorTorque(float motorTorque)
-    {
-        foreach (AxleInfo axleInfo in axleInfos)
-        {
-            if (axleInfo.motor)
-            {
-                axleInfo.leftWheel.motorTorque = motorTorque;
-                axleInfo.rightWheel.motorTorque = motorTorque;
-            }
-        }
-    }
+    
 
 
 
@@ -149,7 +110,10 @@ public class BomberPathfind : MonoBehaviour {
         }
         else
         {
-            currLane += coinFlip[UnityEngine.Random.Range(0, 1)];
+            int tmp = Mathf.FloorToInt(UnityEngine.Random.value * 10) % 2;
+            if (tmp == 0)
+                tmp = -1;
+            currLane += tmp;
         }
         targetLine = new Vector3((currLane * laneWidth) + bomberWidth, 
                                  transform.position.y, 
@@ -166,18 +130,5 @@ public class BomberPathfind : MonoBehaviour {
     private void OnCollisionEnter(Collision collision)
     {
         //print("Collided: " + collision.collider.tag);
-    }
-
-    private void ApplyLocalPositionToVisuals(WheelCollider collider, int wheelIndex)
-    {
-
-        Transform visualWheel = wheelModels[wheelIndex];
-
-        Vector3 position;
-        Quaternion rotation;
-        collider.GetWorldPose(out position, out rotation);
-
-        visualWheel.transform.position = position;
-        visualWheel.transform.rotation = rotation;
     }
 }

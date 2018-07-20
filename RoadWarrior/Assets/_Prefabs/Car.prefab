@@ -507,8 +507,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1002813260674176}
-  m_LocalRotation: {x: -0.13641514, y: 0.006335496, z: -0.000870646, w: -0.9906311}
-  m_LocalPosition: {x: -0.18139601, y: 2.0313728, z: -5.022684}
+  m_LocalRotation: {x: 0.093182646, y: 0.024988096, z: -0.0023418244, w: 0.99533266}
+  m_LocalPosition: {x: 0.16781121, y: 1.4201322, z: -4.8932343}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4685918090712368}
@@ -547,7 +547,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1154958417772396}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.9541855, y: 0.25, z: 4.914768}
+  m_LocalPosition: {x: 3.3, y: 0.25, z: 22.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4415153370080174}
@@ -16188,10 +16188,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  minSpeed: 5
-  laneWidth: 2
-  carWidth: 1
-  numLanes: 3
   cannonDamage: 10
   cameraPivot: {fileID: 4685918090712368}
   turretBase: {fileID: 4139885320897374}
