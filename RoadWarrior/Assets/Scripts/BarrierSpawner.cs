@@ -24,11 +24,21 @@ public class BarrierSpawner : MonoBehaviour {
 
     private void SpawnObjects(int numSpawn)
     {
-        curLocation += UnityEngine.Random.Range(objectIntervalMin, objectIntervalMax);
 
-        if (curLocation < length)
+        int spawned = 0;
+        while (spawned < numSpawn)
         {
-            // PICK A RANDOM OBSTACLE AND PLACE IT
+            curLocation += UnityEngine.Random.Range(objectIntervalMin, objectIntervalMax);
+            if (curLocation < length)
+            {
+                Instantiate(obstaclePrefabs[Mathf.FloorToInt(UnityEngine.Random.Range(0, obstaclePrefabs.Count))],
+                            new Vector3(0.0f, 0.5f, curLocation),
+                            Quaternion.identity,
+                            transform);
+            }
+            else
+                return;
+            spawned++;
         }
     }
 }
