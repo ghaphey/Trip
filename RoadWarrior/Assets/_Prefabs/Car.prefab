@@ -547,7 +547,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1154958417772396}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.3, y: 0.25, z: 22.9}
+  m_LocalPosition: {x: 3.1301231, y: 0.4, z: 3.2344208}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4415153370080174}
@@ -15016,7 +15016,7 @@ MonoBehaviour:
     rightWheel: {fileID: 146203759772484496}
     motor: 1
     steering: 0
-  maxMotorTorque: 100
+  maxMotorTorque: 60
   maxSteeringAngle: 10
   wheelModels:
   - {fileID: 4109533484748812}

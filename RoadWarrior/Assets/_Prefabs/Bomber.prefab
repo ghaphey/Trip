@@ -5932,11 +5932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc51ee12ec4fad4fb28c00179971461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numLanes: 3
-  manueverDistance: 3.75
-  bomberWidth: 1
-  laneWidth: 2
-  currLane: 0
+  manueverDistance: 4.5
   wheelController: {fileID: 114394600318189314}
   targetLine: {x: 0, y: 0, z: 0}
 --- !u!114 &114349983652518030
@@ -7112,10 +7108,10 @@ MonoBehaviour:
     rightWheel: {fileID: 146302194976371688}
     motor: 1
     steering: 0
-  maxMotorTorque: 125
+  maxMotorTorque: 135
   maxSteeringAngle: 15
   turnRate: 80
-  lineFollowDeviation: 0.1
+  lineFollowDeviation: 0.07
   wheelModels:
   - {fileID: 4382691031088152}
   - {fileID: 4397348979815062}

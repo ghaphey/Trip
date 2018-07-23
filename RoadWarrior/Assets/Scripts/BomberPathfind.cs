@@ -7,15 +7,14 @@ public class BomberPathfind : MonoBehaviour {
 
     //[SerializeField] private float speed = 10;
     //[SerializeField] private float accelerate = 0.001f;
-    [SerializeField] private int numLanes = 3;
+    //[SerializeField] private int numLanes = 3;
     [SerializeField] private float manueverDistance = 10;
-    [SerializeField] private float bomberWidth;
-    [SerializeField] private float laneWidth;
-    [SerializeField] private int currLane = 2;
+    //[SerializeField] private float bomberWidth;
+    //[SerializeField] private float laneWidth;
+    //[SerializeField] private int currLane = 2;
     [SerializeField] private EnemyWheelController wheelController;
 
     private Transform playerTransform;
-    //private Rigidbody rb;
     public Vector3 targetLine;
     private int timeTurning;
     private string avoidingName;
@@ -24,22 +23,22 @@ public class BomberPathfind : MonoBehaviour {
 	void Start ()
     {
         targetLine = transform.position;
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        //rb = GetComponent<Rigidbody>();
+        //playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        GetComponent<Rigidbody>().AddForce(Vector3.forward * 25000f, ForceMode.Impulse);
         wheelController.SetMotorTorque(wheelController.maxMotorTorque);
-	}
+    }
 
     // Update is called once per frame
     void Update ()
     {
         AvoidBarriers();
-        if (CheckPlayerDistance())
-        {
-            if (playerTransform.position.x != transform.position.x)
-            {
-                DriveAtPlayer();
-            }
-        }
+        //if (CheckPlayerDistance())
+        //{
+        //    if (playerTransform.position.x != transform.position.x)
+        //    {
+        //        DriveAtPlayer();
+        //    }
+        //}
         //rb.MovePosition(rb.position + Vector3.forward * speed * Time.deltaTime);
 
         if (transform.position.x - wheelController.lineFollowDeviation > targetLine.x )
@@ -89,35 +88,18 @@ public class BomberPathfind : MonoBehaviour {
         RaycastHit hit;
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, manueverDistance))
         {
-            if (hit.collider.tag == "Obstacle" && avoidingName != hit.collider.name)
+            if (hit.collider.tag == "Obstacle" && avoidingName != hit.collider.transform.parent.name)
             {
-                ChangeLane();
-                avoidingName = hit.collider.name;
+                ChangeLane(hit.collider.GetComponent<ObstacleProperties>().GetSafeZones());
+                avoidingName = hit.collider.transform.parent.name;
                 print("Trying to avoid: " + avoidingName);
             }
         }
     }
 
-    private void ChangeLane()
+    private void ChangeLane(List<Transform> safe)
     {
-        if (currLane == numLanes - 1)
-        {
-            currLane--;
-        }
-        else if (currLane == 0)
-        {
-            currLane++;
-        }
-        else
-        {
-            int tmp = Mathf.FloorToInt(UnityEngine.Random.value * 10) % 2;
-            if (tmp == 0)
-                tmp = -1;
-            currLane += tmp;
-        }
-        targetLine = new Vector3((currLane * laneWidth) + bomberWidth, 
-                                 transform.position.y, 
-                                 transform.position.z);
+        targetLine = safe[Mathf.FloorToInt(UnityEngine.Random.Range(0, safe.Count))].position;
     }
 
 

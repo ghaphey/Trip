@@ -6,8 +6,8 @@ using UnityEngine;
 public class BarrierSpawner : MonoBehaviour {
 
     [Header("Spawn Surface Properties")]
-    [SerializeField] private float width = 6f;
-    [SerializeField] private int numLanes = 3;
+    //[SerializeField] private float width = 6f;
+    //[SerializeField] private int numLanes = 3;
     [SerializeField] private float length = 100f;
     [Header("Spawn Properties")]
     [SerializeField] private List<GameObject> obstaclePrefabs;
@@ -31,10 +31,10 @@ public class BarrierSpawner : MonoBehaviour {
             curLocation += UnityEngine.Random.Range(objectIntervalMin, objectIntervalMax);
             if (curLocation < length)
             {
-                Instantiate(obstaclePrefabs[Mathf.FloorToInt(UnityEngine.Random.Range(0, obstaclePrefabs.Count))],
-                            new Vector3(0.0f, 0.5f, curLocation),
-                            Quaternion.identity,
-                            transform);
+                GameObject newOb = Instantiate(obstaclePrefabs[Mathf.FloorToInt(UnityEngine.Random.Range(0, obstaclePrefabs.Count))],
+                            transform,
+                            false);
+                newOb.transform.localPosition = new Vector3(0.0f, 0.5f, curLocation);
             }
             else
                 return;
