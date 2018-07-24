@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour {
 
     [SerializeField] private GameObject bomberPrefab;
-    [SerializeField] private float roadWidth = 6f;
+    //[SerializeField] private float roadWidth = 6f;
     [SerializeField] private int numLanes = 3;
     [SerializeField] private float spawnOffset = 10f;
     [SerializeField] private Transform playerPos;
@@ -26,7 +26,7 @@ public class EnemySpawner : MonoBehaviour {
     {
 		if (playerPos.position.z - spawnOffset > transform.position.z && enemiesNotSpawned)
         {
-            int numSpawning = Mathf.FloorToInt(UnityEngine.Random.Range(0, numLanes));
+            //int numSpawning = Mathf.FloorToInt(UnityEngine.Random.Range(0, numLanes));
             int i = 0;
             do
             {

@@ -9,6 +9,7 @@ public class BomberPathfind : MonoBehaviour {
     //[SerializeField] private float accelerate = 0.001f;
     //[SerializeField] private int numLanes = 3;
     [SerializeField] private float manueverDistance = 10;
+    [SerializeField] private float initialBoost = 25000f;
     //[SerializeField] private float bomberWidth;
     //[SerializeField] private float laneWidth;
     //[SerializeField] private int currLane = 2;
@@ -23,22 +24,23 @@ public class BomberPathfind : MonoBehaviour {
 	void Start ()
     {
         targetLine = transform.position;
-        //playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        GetComponent<Rigidbody>().AddForce(Vector3.forward * 25000f, ForceMode.Impulse);
+        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        GetComponent<Rigidbody>().AddForce(Vector3.forward * initialBoost, ForceMode.Impulse);
         wheelController.SetMotorTorque(wheelController.maxMotorTorque);
+        
     }
 
     // Update is called once per frame
     void Update ()
     {
         AvoidBarriers();
-        //if (CheckPlayerDistance())
-        //{
-        //    if (playerTransform.position.x != transform.position.x)
-        //    {
-        //        DriveAtPlayer();
-        //    }
-        //}
+        if (CheckPlayerDistance())
+        {
+            if (playerTransform.position.x != transform.position.x)
+            {
+                DriveAtPlayer();
+            }
+        }
         //rb.MovePosition(rb.position + Vector3.forward * speed * Time.deltaTime);
 
         if (transform.position.x - wheelController.lineFollowDeviation > targetLine.x )
@@ -92,7 +94,7 @@ public class BomberPathfind : MonoBehaviour {
             {
                 ChangeLane(hit.collider.GetComponent<ObstacleProperties>().GetSafeZones());
                 avoidingName = hit.collider.transform.parent.name;
-                print("Trying to avoid: " + avoidingName);
+                //print("Trying to avoid: " + avoidingName);
             }
         }
     }

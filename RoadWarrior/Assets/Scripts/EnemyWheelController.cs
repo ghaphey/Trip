@@ -8,12 +8,20 @@ public class EnemyWheelController : MonoBehaviour
     [SerializeField] private List<AxleInfo> axleInfos;
     [SerializeField] public float maxMotorTorque;
     [SerializeField] private float maxSteeringAngle;
+    [SerializeField] private Vector3 COM = new Vector3(0.0f, 0.1f, -5.0f);
     [SerializeField] public float turnRate = 80f;
     [SerializeField] public float lineFollowDeviation = 0.1f;
     [SerializeField] private List<Transform> wheelModels;
 
+    private Rigidbody rb;
+
     private float currSteerAngle = 0.0f;
 
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.centerOfMass = COM;
+    }
 
     public void SetSteeringAngle(float angle)
     {

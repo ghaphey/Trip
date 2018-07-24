@@ -33,7 +33,7 @@ public class RoadSpawner : MonoBehaviour {
     {
         GameObject newRoad = Instantiate(roadPrefab, transform, false);
         newRoad.transform.localPosition = new Vector3(0.0f, 0.0f, roadLength * numRoads++);
-        print(numRoads);
+        //print(numRoads);
         return newRoad;
     }
 }

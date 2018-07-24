@@ -6,13 +6,20 @@ public class EnemyHealth : MonoBehaviour {
 
     [SerializeField] private int health = 50;
     [SerializeField] private int impactDamageDealt = 50;
-	
-	// Update is called once per frame
-	void Update () 
+    [SerializeField] private GameObject destroyedPrefab;
+
+    private bool notDead = true;
+
+    // Update is called once per frame
+    void Update () 
     {
-		if (health <= 0 || Vector3.Dot(transform.up, Vector3.down ) > 0)
+		if ((health <= 0 || Vector3.Dot(transform.up, Vector3.down ) > 0) && notDead)
         {
+            GameObject destroyed = Instantiate(destroyedPrefab, transform.parent);
+            destroyed.transform.position = transform.position;
+            destroyed.transform.localScale = transform.localScale;
             Destroy(gameObject);
+            notDead = false;
         }
 	}
 

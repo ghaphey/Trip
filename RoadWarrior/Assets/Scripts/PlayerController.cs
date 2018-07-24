@@ -112,6 +112,6 @@ public class PlayerController : MonoBehaviour
     public void ApplyDamage (int damage)
     {
         health -= damage;
-        print(damage + " damage taken");
+        //print(damage + " damage taken");
     }
 }

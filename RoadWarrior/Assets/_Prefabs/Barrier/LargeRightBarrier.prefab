@@ -793,6 +793,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 50
   impactDamageDealt: 50
+  destroyedPrefab: {fileID: 1759810052550322, guid: fb8b4de0b1c677743a5adfd68e6d870b,
+    type: 2}
 --- !u!114 &114975028533394636
 MonoBehaviour:
   m_ObjectHideFlags: 1
