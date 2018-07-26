@@ -30,7 +30,7 @@ public class EnemySpawner : MonoBehaviour {
             int i = 0;
             do
             {
-                Instantiate(bomberPrefab, transform.localPosition + new Vector3(1 + i * 2, 0.1f, 5f),
+                Instantiate(bomberPrefab, transform.localPosition + new Vector3(1 + i * 2, 0.1f, 0.0f),
                     Quaternion.identity);
                 i++;
             } while (i < numLanes);

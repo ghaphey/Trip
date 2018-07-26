@@ -7,6 +7,7 @@ public class EnemyHealth : MonoBehaviour {
     [SerializeField] private int health = 50;
     [SerializeField] private int impactDamageDealt = 50;
     [SerializeField] private GameObject destroyedPrefab;
+    [SerializeField] private GameObject deathFX;
 
     private bool notDead = true;
 
@@ -15,6 +16,8 @@ public class EnemyHealth : MonoBehaviour {
     {
 		if ((health <= 0 || Vector3.Dot(transform.up, Vector3.down ) > 0) && notDead)
         {
+            if (deathFX != null)
+                Instantiate(deathFX,transform.position,Quaternion.identity);
             GameObject destroyed = Instantiate(destroyedPrefab, transform.parent);
             destroyed.transform.position = transform.position;
             destroyed.transform.localScale = transform.localScale;

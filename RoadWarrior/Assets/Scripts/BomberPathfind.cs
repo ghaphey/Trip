@@ -14,6 +14,7 @@ public class BomberPathfind : MonoBehaviour {
     //[SerializeField] private float laneWidth;
     //[SerializeField] private int currLane = 2;
     [SerializeField] private EnemyWheelController wheelController;
+    [SerializeField] private Transform finderPoint;
 
     private Transform playerTransform;
     public Vector3 targetLine;
@@ -43,13 +44,13 @@ public class BomberPathfind : MonoBehaviour {
         }
         //rb.MovePosition(rb.position + Vector3.forward * speed * Time.deltaTime);
 
-        if (transform.position.x - wheelController.lineFollowDeviation > targetLine.x )
+        if (finderPoint.position.x - wheelController.lineFollowDeviation > targetLine.x )
         {
             wheelController.SetSteeringAngle(-wheelController.turnRate);
             //print("turningleft");
             //timeTurning--;
         }
-        else if (transform.position.x + wheelController.lineFollowDeviation < targetLine.x )
+        else if (finderPoint.position.x + wheelController.lineFollowDeviation < targetLine.x )
         {
             wheelController.SetSteeringAngle(wheelController.turnRate);
             //print("turningright");

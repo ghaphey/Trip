@@ -520,17 +520,9 @@ MonoBehaviour:
     angleError: 8
     areaError: 15
   dontDestroyMeshOnDelete: 0
-  m_selectedFaces: 00000000
-  m_SelectedEdges:
-  - x: 0
-    y: 0
-  - x: 0
-    y: 0
-  - x: 0
-    y: 0
-  - x: 0
-    y: 0
-  m_selectedTriangles: 00000000000000000000000000000000
+  m_selectedFaces: 
+  m_SelectedEdges: []
+  m_selectedTriangles: 
 --- !u!114 &114204545827390724
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -566,7 +558,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bomberPrefab: {fileID: 1547813748638362, guid: 69c0dfad3ab882b43b651e0a9d516dcb,
     type: 2}
-  roadWidth: 6
   numLanes: 1
   spawnOffset: 15
   playerPos: {fileID: 0}
